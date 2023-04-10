@@ -9,9 +9,27 @@
       	flex-direction: column;
         height: 100%;
       }
+      h2 {
+        text-weight: normal;
+      }
+      footer {
+        /* This can probably be done in flexbox too? */
+        position: fixed;
+        bottom: 0;
+      }
     </style>
     <script>
-      console.log(new Date());
+      // TODO: make this actually update the Yes/No answer as well before Bog time
+      document.addEventListener('load', function() {
+        const eventDate = new Date('2023-04-28T20:00');
+        const nowDate = new Date();
+        const diff = eventDate - nowDate;
+        
+        // Time math is scary and I should be doing my day job so...
+        const timeString = Math.floor(diff / 1000) + ' seconds';
+        
+        document.getElementById('time-til-bog').textContent = timeString;
+      });
     </script>
   </head>
   <body>
@@ -21,7 +39,11 @@
       </h1>
       <h2>
         Soon...
+        <span id="time-til-bog"></span>
       </h2>
     </div>
+    <footer>
+      Unofficial fansite. See <a href="https://thecirclelarp.com/">The Circle's website</a> for up-to-date information.
+    </footer>
   </body>
 </html>
