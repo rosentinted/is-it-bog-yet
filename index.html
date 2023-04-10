@@ -19,16 +19,34 @@
       }
     </style>
     <script>
+      const namedUnits = [
+        { name: 'second', amount: 60 },
+        { name: 'minute', amount: 60 },
+        { name: 'hour', amount: 24 },
+        { name: 'day', amount: Infinity },
+      ];
+      
+      function intervalString(total) {
+        let unitStrings = [];
+        
+        for (let unit of namedUnits) {
+          const unitNumber = total % unit.amount;
+          total = Math.floor(total / unit.amount);
+          
+          const unitString = unitNumber + ' ' + unit.name + (unitNumber === 1 ? '' : 's');
+          unitStrings.push(unitString);
+        }
+        
+        return unitStrings.reverse().join(', ');
+      }
+      
       // TODO: make this actually update the Yes/No answer as well before Bog time
       document.addEventListener('DOMContentLoaded', function() {
         const eventDate = new Date('2023-04-28T20:00');
         const nowDate = new Date();
-        const diff = eventDate - nowDate;
+        const diffInSeconds = Math.floor(eventDate - nowDate / 1000);
         
-        // Time math is scary and I should be doing my day job so...
-        const timeString = Math.floor(diff / 1000) + ' seconds';
-        
-        document.getElementById('time-til-bog').textContent = timeString;
+        document.getElementById('time-til-bog').textContent = intervalString(diffInSeconds);
       });
     </script>
   </head>
