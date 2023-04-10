@@ -10,7 +10,7 @@
         height: 100%;
       }
       h2 {
-        text-weight: normal;
+        font-weight: normal;
       }
       footer {
         /* This can probably be done in flexbox too? */
@@ -20,7 +20,7 @@
     </style>
     <script>
       // TODO: make this actually update the Yes/No answer as well before Bog time
-      document.addEventListener('load', function() {
+      document.addEventListener('DOMContentLoaded', function() {
         const eventDate = new Date('2023-04-28T20:00');
         const nowDate = new Date();
         const diff = eventDate - nowDate;
