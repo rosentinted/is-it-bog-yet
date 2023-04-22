@@ -55,7 +55,7 @@
             return new Date(event.start);
           }
         }
-        // TODO throw error
+        return null;
       }
 
       function thresholdString(total) {
@@ -89,6 +89,13 @@
       document.addEventListener('DOMContentLoaded', function() {
         const nowDate = new Date();
         const eventDate = getNextEventStart(nowDate);
+
+        if (eventDate === null) {
+          document.getElementById('is-it-bog').textContent = 'Maybe?';
+          document.getElementById('time-til-bog').textContent = 'No future events known!';
+          return;
+        }
+
         const diffInSeconds = Math.floor((eventDate - nowDate) / 1000);
 
         document.getElementById('is-it-bog').textContent = thresholdString(diffInSeconds);
