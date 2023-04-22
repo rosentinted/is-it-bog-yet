@@ -6,7 +6,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
-      	flex-direction: column;
+        flex-direction: column;
         height: 100%;
       }
       h2 {
@@ -25,8 +25,32 @@
         { name: 'hour', amount: 24 },
         { name: 'day', amount: Infinity },
       ];
-      
+
+      const secondsInOneDay = 60 * 60 * 24;
+
+      const textThresholds = [
+        { value: 0, text: 'Yes!' },
+        { value: secondsInOneDay, text: 'Very very soon.' },
+        { value: secondsInOneDay * 7, text: 'Very soon...' },
+        { value: secondsInOneDay * 14, text: 'Soon...' },
+        { value: Infinity, text: 'No.' },
+      ];
+
+      function thresholdString(total) {
+        for (let threshold of textThresholds) {
+          if (total < threshold.value) {
+            return threshold.text;
+          }
+        }
+
+        return '';
+      }
+
       function intervalString(total) {
+        if (total < 0) {
+          return '';
+        }
+
         let unitStrings = [];
         
         for (let unit of namedUnits) {
@@ -40,12 +64,12 @@
         return unitStrings.reverse().join(', ');
       }
       
-      // TODO: make this actually update the Yes/No answer as well before Bog time
       document.addEventListener('DOMContentLoaded', function() {
         const eventDate = new Date('2023-04-28T20:00');
         const nowDate = new Date();
         const diffInSeconds = Math.floor((eventDate - nowDate) / 1000);
-        
+
+        document.getElementById('is-it-bog').textContent = thresholdString(diffInSeconds);
         document.getElementById('time-til-bog').textContent = intervalString(diffInSeconds);
       });
     </script>
@@ -53,10 +77,9 @@
   <body>
     <div class="container">
       <h1>
-        No.
+        <span id="is-it-bog">Hmm...</span>
       </h1>
       <h2>
-        Soon...
         <span id="time-til-bog"></span>
       </h2>
     </div>
@@ -65,3 +88,4 @@
     </footer>
   </body>
 </html>
+
