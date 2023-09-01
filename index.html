@@ -113,20 +113,28 @@
         imageElement.style.opacity = `${100 * clampedPercent}%`;
       }
 
+      function setTextContent(elementId, text) {
+        const element = document.getElementById(elementId);
+        element.textContent = text;
+        if (!text) {
+          element.style.display = 'none';
+        }
+      }
+
       document.addEventListener('DOMContentLoaded', function() {
         const nowDate = new Date();
         const eventDate = getNextEventStart(nowDate);
 
         if (eventDate === null) {
-          document.getElementById('is-it-bog').textContent = 'Maybe?';
-          document.getElementById('time-til-bog').textContent = 'No future events known!';
+          setTextContent('is-it-bog', 'Maybe?');
+          setTextContent('time-til-bog', 'No future events known!');
           return;
         }
 
         const diffInSeconds = Math.floor((eventDate - nowDate) / 1000);
 
-        document.getElementById('is-it-bog').textContent = thresholdString(diffInSeconds);
-        document.getElementById('time-til-bog').textContent = intervalString(diffInSeconds);
+        setTextContent('is-it-bog', thresholdString(diffInSeconds));
+        setTextContent('time-til-bog', intervalString(diffInSeconds));
         setImageProgress(diffInSeconds);
       });
     </script>
@@ -135,12 +143,8 @@
     <img id="background" src="./background.jpg" />
     <div class="container">
       <div class="text-container">
-        <h1>
-          <span id="is-it-bog">Hmm...</span>
-        </h1>
-        <h2>
-          <span id="time-til-bog"></span>
-        </h2>
+        <h1 id="is-it-bog">Hmm...</h1>
+        <h2 id="time-til-bog"></h2>
       </div>
     </div>
     <footer>
