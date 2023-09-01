@@ -7,21 +7,39 @@
         height: 100%;
         margin: 0;
       }
-      .container {
+      .container, .text-container {
         display: flex;
         align-items: center;
         justify-content: center;
         flex-direction: column;
+      }
+      .container {
         height: 100%;
       }
       h2 {
         font-weight: normal;
       }
+      .text-container {
+        background-color: rgba(255, 255, 255, 0.5);
+        border-radius: 10px;
+        padding: 20px;
+      }
       footer {
         /* This can probably be done in flexbox too? */
         position: fixed;
         bottom: 0;
+        width: 100%;
+        background-color: rgba(255, 255, 255, 0.7);
         padding: 5px;
+      }
+      #background {
+        position: fixed;
+        z-index: -1;
+        height: 110%;
+        width: 110%;
+        inset: -5%;
+        object-fit: cover;
+        opacity: 0%;
       }
     </style>
     <script>
@@ -86,6 +104,15 @@
         return unitStrings.reverse().join(', ');
       }
       
+      function setImageProgress(total) {
+        const maxBlurPixels = 20;
+        const fractionRemaining = total / (secondsInOneDay * 14);
+        const clampedPercent = Math.min(1, Math.max(0, 1 - fractionRemaining));
+
+        const imageElement = document.getElementById('background');
+        imageElement.style.opacity = `${100 * clampedPercent}%`;
+      }
+
       document.addEventListener('DOMContentLoaded', function() {
         const nowDate = new Date();
         const eventDate = getNextEventStart(nowDate);
@@ -100,17 +127,21 @@
 
         document.getElementById('is-it-bog').textContent = thresholdString(diffInSeconds);
         document.getElementById('time-til-bog').textContent = intervalString(diffInSeconds);
+        setImageProgress(diffInSeconds);
       });
     </script>
   </head>
   <body>
+    <img id="background" src="./background.jpg" />
     <div class="container">
-      <h1>
-        <span id="is-it-bog">Hmm...</span>
-      </h1>
-      <h2>
-        <span id="time-til-bog"></span>
-      </h2>
+      <div class="text-container">
+        <h1>
+          <span id="is-it-bog">Hmm...</span>
+        </h1>
+        <h2>
+          <span id="time-til-bog"></span>
+        </h2>
+      </div>
     </div>
     <footer>
       Unofficial fansite. See <a href="https://thecirclelarp.com/">The Circle's website</a> for up-to-date information.
